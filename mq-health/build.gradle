@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+wrapper {
+    gradleVersion = '8.14.6'
+}
+
+group = 'org.sachse.mqhealth'
+version = "$mqhealthVersion"
+
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.repository.redhat.com/ga/' }
+}
+
+dependencies {
+    // Provided by JBoss EAP 8 at runtime.
+    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: servletApiVersion
+    compileOnly group: 'org.wildfly.core', name: 'wildfly-controller-client', version: wildflyControllerClientVersion
+}
+
+java {
+    toolchain {
+            languageVersion.set(JavaLanguageVersion.of(javaToolchainVersion))
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
